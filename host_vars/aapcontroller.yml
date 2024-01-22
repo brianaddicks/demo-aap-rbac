@@ -5,7 +5,7 @@ controller_components:
   - users
   - roles
   # - execution_environments
-  - projects
+  # - projects
   # - inventories
   # - inventory_sources
   - job_templates
@@ -66,7 +66,25 @@ controller_templates:
     job_type: run
     inventory: "{{ inventory_name }}"
     execution_environment: "{{ aap_ee }}"
-    project: "{{ this_project_name }}"
+    project: "Global Templates"
+    playbook: playbooks/sample_playbook.yml
+  - name: Devops JT
+    job_type: run
+    inventory: "{{ inventory_name }}"
+    execution_environment: "{{ aap_ee }}"
+    project: Devops Project
+    playbook: playbooks/sample_playbook.yml
+  - name: Devops Customer 1 JT
+    job_type: run
+    inventory: "{{ inventory_name }}"
+    execution_environment: "{{ aap_ee }}"
+    project: Devops Customer 1 Project
+    playbook: playbooks/sample_playbook.yml
+  - name: Devops Customer 2 JT
+    job_type: run
+    inventory: "{{ inventory_name }}"
+    execution_environment: "{{ aap_ee }}"
+    project: Devops Customer 2 Project
     playbook: playbooks/sample_playbook.yml
 
 
@@ -158,6 +176,36 @@ controller_roles:
       - Devops Customer 1
       - Devops Customer 2
     role: project_admin
+  - team: Devops Admins
+    organizations:
+      - Devops
+      - Devops Customer 1
+      - Devops Customer 2
+    role: inventory_admin
+  - team: Devops Admins
+    organizations:
+      - Devops
+      - Devops Customer 1
+      - Devops Customer 2
+    role: credential_admin
+  - team: Devops Admins
+    organizations:
+      - Devops
+      - Devops Customer 1
+      - Devops Customer 2
+    role: workflow_admin
+  - team: Devops Admins
+    organizations:
+      - Devops
+      - Devops Customer 1
+      - Devops Customer 2
+    role: notification_admin
+  - team: Devops Admins
+    organizations:
+      - Devops
+      - Devops Customer 1
+      - Devops Customer 2
+    role: job_template_admin
   - team: Devops Customer 1 Admins
     organizations:
       - Devops Customer 1
@@ -166,3 +214,23 @@ controller_roles:
     organizations:
       - Devops Customer 2
     role: project_admin
+  - team: Devops Admins
+    organizations:
+      - Global Resources
+    role: execute
+  - team: Devops Customer 1 Users
+    organizations:
+      - Global Resources
+    role: execute
+  - team: Devops Customer 2 Users
+    organizations:
+      - Global Resources
+    role: execute
+  - team: Devops Customer 1 Users
+    organizations:
+      - Devops Customer 1
+    role: execute
+  - team: Devops Customer 2 Users
+    organizations:
+      - Devops Customer 2
+    role: execute
