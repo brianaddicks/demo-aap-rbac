@@ -8,7 +8,7 @@ controller_components:
   - projects
   # - inventories
   # - inventory_sources
-  # - job_templates
+  - job_templates
 
 this_project_name: RBAC Demo
 aap_ee: AAP EE
@@ -17,6 +17,15 @@ inventory_name: RBAC Demo
 controller_projects:
   - name: "{{ this_project_name }}"
     organization: AAP Admins
+    scm_branch: main
+    scm_clean: 'no'
+    scm_delete_on_update: 'no'
+    scm_type: git
+    scm_update_on_launch: 'no'
+    scm_url: https://github.com/brianaddicks/demo-aap-rbac
+    update_project: true
+  - name: "Global Templates"
+    organization: Global Resources
     scm_branch: main
     scm_clean: 'no'
     scm_delete_on_update: 'no'
@@ -56,9 +65,9 @@ controller_templates:
   - name: Global JT
     job_type: run
     inventory: "{{ inventory_name }}"
-    execution_environment: my_exec_env
+    execution_environment: "{{ aap_ee }}"
     project: "{{ this_project_name }}"
-    playbook: sample_playbook.yml
+    playbook: playbooks/sample_playbook.yml
 
 
 controller_inventories:
@@ -86,6 +95,8 @@ controller_execution_environments:
 controller_organizations:
   - name: AAP Admins
     description: Org for AAP Administration
+  - name: Global Resources
+    description: Org to store globalling available content
   - name: Devops
     description: Devops over-arching Org
   - name: Devops Customer 1
@@ -124,7 +135,6 @@ team_admin_roles:
   - workflow_admin
   - notification_admin
   - job_template_admin
-
 
 controller_roles:
   - user: devops-admin
