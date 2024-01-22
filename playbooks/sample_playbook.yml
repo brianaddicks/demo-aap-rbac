@@ -1,0 +1,9 @@
+---
+- name: Setup Ansible components
+  hosts: aapcontroller
+  gather_facts: false
+
+  tasks:
+    - name: debug output
+      ansible.builtin.debug:
+        var: ansible_user

@@ -1,0 +1,158 @@
+---
+controller_components:
+  - organizations
+  - teams
+  - users
+  - roles
+  # - execution_environments
+  - projects
+  # - inventories
+  # - inventory_sources
+  # - job_templates
+
+this_project_name: RBAC Demo
+aap_ee: AAP EE
+inventory_name: RBAC Demo
+
+controller_projects:
+  - name: "{{ this_project_name }}"
+    organization: AAP Admins
+    scm_branch: main
+    scm_clean: 'no'
+    scm_delete_on_update: 'no'
+    scm_type: git
+    scm_update_on_launch: 'no'
+    scm_url: https://github.com/brianaddicks/demo-aap-rbac
+    update_project: true
+  - name: "Devops Customer 1 Project"
+    organization: Devops Customer 1
+    scm_branch: main
+    scm_clean: 'no'
+    scm_delete_on_update: 'no'
+    scm_type: git
+    scm_update_on_launch: 'no'
+    scm_url: https://github.com/brianaddicks/demo-aap-rbac
+    update_project: true
+  - name: "Devops Customer 2 Project"
+    organization: Devops Customer 2
+    scm_branch: main
+    scm_clean: 'no'
+    scm_delete_on_update: 'no'
+    scm_type: git
+    scm_update_on_launch: 'no'
+    scm_url: https://github.com/brianaddicks/demo-aap-rbac
+    update_project: true
+  - name: "Devops Project"
+    organization: Devops
+    scm_branch: main
+    scm_clean: 'no'
+    scm_delete_on_update: 'no'
+    scm_type: git
+    scm_update_on_launch: 'no'
+    scm_url: https://github.com/brianaddicks/demo-aap-rbac
+    update_project: true
+
+controller_templates:
+  - name: Global JT
+    job_type: run
+    inventory: "{{ inventory_name }}"
+    execution_environment: my_exec_env
+    project: "{{ this_project_name }}"
+    playbook: sample_playbook.yml
+
+
+controller_inventories:
+  - name: "{{ this_project_name }}"
+    description: "{{ this_project_name }}"
+    organization: Default
+
+controller_inventory_sources:
+  - name: "{{ this_project_name }}"
+    source: scm
+    inventory: "{{ this_project_name }}"
+    source_path: inventory.yml
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+    source_project: "{{ this_project_name }}"
+
+controller_execution_environments:
+  - name: "{{ aap_ee }}"
+    image: quay.io/rh_ee_baddicks/ansible-controller-ee
+    pull: always
+
+# #######################################################
+
+controller_organizations:
+  - name: AAP Admins
+    description: Org for AAP Administration
+  - name: Devops
+    description: Devops over-arching Org
+  - name: Devops Customer 1
+    description: Devops Customer 1
+  - name: Devops Customer 2
+    description: Devops Customer 2
+
+controller_teams:
+  - name: Devops Admins
+    organization: Devops
+  - name: Devops Users
+    organization: Devops
+  - name: Devops Customer 1 Admins
+    organization: Devops Customer 1
+  - name: Devops Customer 1 Users
+    organization: Devops Customer 1
+  - name: Devops Customer 2 Admins
+    organization: Devops Customer 2
+  - name: Devops Customer 2 Users
+    organization: Devops Customer 2
+
+controller_user_accounts:
+  - user: aap-admin
+    is_superuser: true
+    organization: 6
+  - user: devops-admin
+  - user: devops-customer1-admin
+  - user: devops-customer1-user
+  - user: devops-customer2-admin
+  - user: devops-customer2-user
+
+team_admin_roles:
+  - project_admin
+  - inventory_admin
+  - credential_admin
+  - workflow_admin
+  - notification_admin
+  - job_template_admin
+
+
+controller_roles:
+  - user: devops-admin
+    target_team: Devops Admins
+    role: admin
+  - user: devops-customer1-admin
+    target_team: Devops Customer 1 Admins
+    role: admin
+  - user: devops-customer2-admin
+    target_team: Devops Customer 2 Admins
+    role: admin
+  - user: devops-customer1-user
+    target_team: Devops Customer 1 Users
+    role: member
+  - user: devops-customer2-user
+    target_team: Devops Customer 2 Users
+    role: member
+  - team: Devops Admins
+    organizations:
+      - Devops
+      - Devops Customer 1
+      - Devops Customer 2
+    role: project_admin
+  - team: Devops Customer 1 Admins
+    organizations:
+      - Devops Customer 1
+    role: project_admin
+  - team: Devops Customer 2 Admins
+    organizations:
+      - Devops Customer 2
+    role: project_admin

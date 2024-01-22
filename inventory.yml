@@ -1,0 +1,9 @@
+all:
+  vars:
+    aap_fqdn: add-acw-aap-001.addicks.us
+  children:
+    apiendpoints:
+      hosts:
+        aapcontroller:
+      vars:
+        ansible_connection: local
